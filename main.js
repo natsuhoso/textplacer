@@ -27,6 +27,8 @@ $('#main').keydown(function(e){
 	}
 	if(e.key == 'Enter'){
 		e.preventDefault()
+		let new_cursor = this.selectionStart + column + 1
+		this.setSelectionRange(new_cursor, new_cursor)
 	}
 	if(e.metaKey && e.key=='v'){
 		paste = true
