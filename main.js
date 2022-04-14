@@ -18,7 +18,6 @@ $main[0].scrollTop = 0
 let backspace_key = false
 let paste = false
 let cursor_before_paste = 0
-let cut = false
 let amount_of_cut = 0
 
 $('#main').keydown(function(e){
@@ -39,9 +38,16 @@ $('#main').keydown(function(e){
 		if(e.metaKey && e.key=='c'){
 			/// 未定
 		}else if(e.metaKey && e.key=='x'){
-			cut = true
-			amount_of_cut = Math.abs(this.selectionEnd - this.selectionStart)
 			e.preventDefault() /////////////////////////// 削除しない  直接クリップボードに載せる
+			let text = $(this).val()
+			let start = this.selectionStart
+			let end   = this.selectionEnd
+			amount_of_cut = end - start
+			navigator.clipboard.writeText(text.slice(start, end))
+			text = text.slice(0, start) + text.slice(start, end).replace(/./g, ' ') + text.slice(end)
+			$(this).val(text)
+		}else if(e.key=='ArrowLeft' || e.key=='ArrowRight' || e.key=='ArrowDown' || e.key=='ArrowUp' ){
+			//
 		}else{
 			e.preventDefault()
 		}
@@ -61,8 +67,6 @@ $('#main').on('input', function(e){
 	}else if(paste){
 		/////////////////////////////////////////////
 		// text = 
-	}else if(cut){
-		// text = text.slice(0,cursor) + ' '.repeat(amount_of_cut) + text.slice(cursor)  // 行を跨ぐ場合の修正が必要
 	}else if(text[cursor]=='\n'){
 		text = text.slice(0,cursor-1) + text.slice(cursor)
 	}else{
@@ -76,5 +80,4 @@ $('#main').on('input', function(e){
 $('#main').keyup(function(e){
 	backspace_key = false
 	paste = false
-	cut = false
 })
