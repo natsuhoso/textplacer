@@ -52,6 +52,9 @@ $('#main').keydown(function(e){
 			e.preventDefault()
 		}
 	}
+	if(this.selectionStart > 4038 && !(e.key=='ArrowLeft' || e.key=='ArrowUp') ){
+		e.preventDefault()
+	}
 })
 
 let old_text = $main.val()
